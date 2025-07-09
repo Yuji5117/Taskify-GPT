@@ -1,7 +1,5 @@
 const getEnv = (name: string) => {
-  console.log(name);
-  const value = process.env[name];
-  console.log(value);
+  sconst value = process.env[name];
   if (!value) {
     throw new Error(`❌ Missing required environment variable: ${name}`);
   }
