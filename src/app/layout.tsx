@@ -14,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <header>Taskify-GPT</header>
+        {children}
+        <footer>© 2025 Polylingo</footer>
+      </body>
     </html>
   );
 }
