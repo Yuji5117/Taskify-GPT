@@ -33,6 +33,11 @@ export default function Home() {
     );
   };
 
+  const handleCreateIssues = () => {
+    console.log("Create these issues: ", selectedTasks);
+    // githubにイシューを作る処理を実装
+  };
+
   return (
     <div className="max-w-5xl mx-auto py-10">
       <div>
@@ -56,15 +61,26 @@ export default function Home() {
         </div>
 
         {tasks.length > 0 ? (
-          <div className="my-8 px-4 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {tasks.map((task) => (
-              <TaskCard
-                key={task.title}
-                task={task}
-                isChecked={selectedTasks.some((t) => t.id === task.id)}
-                onToggle={handleToggleTask}
-              />
-            ))}
+          <div className="px-4">
+            <div className="my-8 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {tasks.map((task) => (
+                <TaskCard
+                  key={task.title}
+                  task={task}
+                  isChecked={selectedTasks.some((t) => t.id === task.id)}
+                  onToggle={handleToggleTask}
+                />
+              ))}
+            </div>
+
+            <div className="flex justify-center">
+              <button
+                className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-all duration-200 ease-in-out"
+                onClick={handleCreateIssues}
+              >
+                タスクをIssue化
+              </button>
+            </div>
           </div>
         ) : (
           <p className="text-center text-xl">タスクがありません。</p>
