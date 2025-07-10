@@ -1,11 +1,12 @@
 "use client";
 
+import TaskCardList from "@/component/Task/TaskCardList";
 import { Task } from "@/types/types";
 import { ChangeEvent, useState } from "react";
 
 export default function Home() {
   const [chatText, setChatText] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>();
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   const handleChatChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setChatText(e.target.value);
@@ -34,22 +35,11 @@ export default function Home() {
           />
           <button onClick={handleExtractTasks}>タスクの抽出</button>
 
-          <table>
-            <thead>
-              <tr>
-                <th>タイトル</th>
-                <th>説明</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks?.map((task, index) => (
-                <tr key={index}>
-                  <td>{task.title}</td>
-                  <td>{task.description}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {tasks.length > 0 ? (
+            <TaskCardList tasks={tasks} />
+          ) : (
+            <p>タスクがありません。</p>
+          )}
         </div>
       </main>
     </div>
