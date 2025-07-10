@@ -1,7 +1,7 @@
 export const generateTaskExtractionPrompt = (chatText: string) => {
   return `
   以下は、ユーザーとAIの間で交わされた開発に関する会話です。
-  この会話から、実装すべき具体的なタスクを抽出してください。
+  この会話から、実装すべき具体的なタスクを日本語で抽出してください。
 
   出力形式は以下のJSON配列としてください：
 
