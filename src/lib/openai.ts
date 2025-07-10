@@ -1,6 +1,7 @@
 import OpenAI from "openai";
 import { env } from "./env";
 import { generateTaskExtractionPrompt } from "./prompts";
+import { extractJsonFromCodeBlock } from "@/util/parse";
 
 const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
@@ -8,7 +9,8 @@ export const extractTasksFromChat = async (chatText: string) => {
   const prompt = generateTaskExtractionPrompt(chatText);
 
   const response = await openai.chat.completions.create({
-    model: "gpt-4o",
+    model: "gpt-3.5-turbo",
+    // model: "gpt-4o",
     messages: [
       {
         role: "system",
@@ -22,11 +24,13 @@ export const extractTasksFromChat = async (chatText: string) => {
     ],
   });
 
-  const raw = response.choices[0].message.content?.trim();
+  const raw = response.choices[0].message.content?.trim() ?? "";
+
+  const cleaned = extractJsonFromCodeBlock(raw);
 
   try {
-    const json = raw ? JSON.parse(raw) : [];
-    return json;
+    const tasks = JSON.parse(cleaned);
+    return tasks;
   } catch (err) {
     console.error("❌ JSON parse error:", err);
     console.error("GPT response was:", raw);
