@@ -15,9 +15,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <header>Taskify-GPT</header>
-        {children}
-        <footer>© 2025 Polylingo</footer>
+        <div className="min-h-screen flex flex-col">
+          <header className="h-14 bg-amber-50">
+            <div className="max-w-6xl mx-auto flex items-center h-full">
+              <h1 className="text-xl font-bold">Taskify-GPT</h1>
+            </div>
+          </header>
+          <main className="flex-1">{children}</main>
+          <footer className=" bg-blue-900 flex justify-center">
+            <div className="text-white text-sm">© 2025 Polylingo</div>
+          </footer>
+        </div>
       </body>
     </html>
   );

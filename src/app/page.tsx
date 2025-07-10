@@ -35,32 +35,28 @@ export default function Home() {
 
   return (
     <div>
-      <main>
-        <div>
-          <textarea
-            value={chatText}
-            onChange={handleChatChange}
-            className="border"
-            placeholder="ChatGPTとの会話を貼り付けてください"
-          />
-          <button onClick={handleExtractTasks}>タスクの抽出</button>
+      <textarea
+        value={chatText}
+        onChange={handleChatChange}
+        className="border"
+        placeholder="ChatGPTとの会話を貼り付けてください"
+      />
+      <button onClick={handleExtractTasks}>タスクの抽出</button>
 
-          {tasks.length > 0 ? (
-            <div>
-              {tasks.map((task) => (
-                <TaskCard
-                  key={task.title}
-                  task={task}
-                  isChecked={selectedTasks.some((t) => t.id === task.id)}
-                  onToggle={handleToggleTask}
-                />
-              ))}
-            </div>
-          ) : (
-            <p>タスクがありません。</p>
-          )}
+      {tasks.length > 0 ? (
+        <div>
+          {tasks.map((task) => (
+            <TaskCard
+              key={task.title}
+              task={task}
+              isChecked={selectedTasks.some((t) => t.id === task.id)}
+              onToggle={handleToggleTask}
+            />
+          ))}
         </div>
-      </main>
+      ) : (
+        <p>タスクがありません。</p>
+      )}
     </div>
   );
 }
