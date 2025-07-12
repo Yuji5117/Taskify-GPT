@@ -1,7 +1,7 @@
 "use client";
 
 import TaskCard from "@/component/Task/TaskCard";
-import { Task } from "@/types/types";
+import { Task } from "@/types";
 import { ChangeEvent, useState } from "react";
 
 export default function Home() {

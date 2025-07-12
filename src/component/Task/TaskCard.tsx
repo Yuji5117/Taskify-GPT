@@ -1,4 +1,4 @@
-import { Task } from "@/types/types";
+import { Task } from "@/types";
 import React from "react";
 
 type TaskCardProps = {

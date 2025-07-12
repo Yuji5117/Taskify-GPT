@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { env } from "./env";
 import { generateTaskExtractionPrompt } from "./prompts";
 import { extractJsonFromCodeBlock } from "@/util/parse";
-import { Task } from "@/types/types";
+import { Task } from "@/types";
 
 const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
