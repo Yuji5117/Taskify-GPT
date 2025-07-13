@@ -14,7 +14,7 @@ export default function Home() {
   };
 
   const handleExtractTasks = async () => {
-    const response = await fetch("/api/extract", {
+    const response = await fetch("/api/tasks/extract", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chatText }),
