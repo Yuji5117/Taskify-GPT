@@ -3,7 +3,13 @@
 import Image from "next/image";
 import React from "react";
 
-const LoginModal = () => {
+interface LoginModalProps {
+  isOpen: boolean;
+}
+
+const LoginModal = ({ isOpen }: LoginModalProps) => {
+  if (!isOpen) return <></>;
+
   return (
     <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/30">
       <div className="w-[30vw] max-w-md p-6 bg-white z-50 rounded-md shadow-lg relative">

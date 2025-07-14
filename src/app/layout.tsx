@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
+import LoginTriggerButton from "@/component/LoginTriggerButton";
 
 export const metadata: Metadata = {
   title: "Taskify-GPT",
@@ -20,8 +21,9 @@ export default function RootLayout({
       <body>
         <div className="min-h-screen flex flex-col">
           <header className="h-14 bg-amber-50">
-            <div className="max-w-6xl mx-auto flex items-center h-full">
+            <div className="max-w-6xl mx-auto flex items-center justify-between h-full">
               <h1 className="text-xl font-bold">Taskify-GPT</h1>
+              <LoginTriggerButton />
             </div>
           </header>
           <main className="flex-1">{children}</main>
