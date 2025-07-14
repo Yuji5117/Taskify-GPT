@@ -1,6 +1,7 @@
 "use client";
 
 import TaskCard from "@/component/Task/TaskCard";
+import Button from "@/component/ui/Button";
 import { Task } from "@/types";
 import { ChangeEvent, useState } from "react";
 
@@ -44,7 +45,7 @@ export default function Home() {
         <h2 className="text-3xl text-center font-bold">
           🤖 ChatGPTとの会話を貼り付けてタスクを抽出しよう
         </h2>
-        <div className="py-10 flex flex-col">
+        <div className="py-10 flex flex-col items-center">
           <textarea
             value={chatText}
             onChange={handleChatChange}
@@ -52,12 +53,13 @@ export default function Home() {
             placeholder="ChatGPTとの会話を貼り付けてください"
             rows={15}
           />
-          <button
-            className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-all duration-200 ease-in-out"
+          <Button
+            size="lg"
+            className="mt-6 w-[50vw] max-w-xl"
             onClick={handleExtractTasks}
           >
             タスクの抽出
-          </button>
+          </Button>
         </div>
 
         {tasks.length > 0 ? (
@@ -74,12 +76,9 @@ export default function Home() {
             </div>
 
             <div className="flex justify-center">
-              <button
-                className="mt-6 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-full shadow-md transition-all duration-200 ease-in-out"
-                onClick={handleCreateIssues}
-              >
+              <Button size="md" onClick={handleCreateIssues}>
                 タスクをIssue化
-              </button>
+              </Button>
             </div>
           </div>
         ) : (

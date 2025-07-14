@@ -2,18 +2,16 @@
 
 import React, { useState } from "react";
 import LoginModal from "./auth/LoginModal";
+import Button from "./ui/Button";
 
 const LoginTriggerButton = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="text-white px-3 py-1 bg-blue-600 hover:bg-blue-700 border font-semibold rounded-full shadow-md cursor-pointer"
-      >
+      <Button size="sm" onClick={() => setIsModalOpen(true)}>
         Log in
-      </button>
+      </Button>
       {isModalOpen && (
         <LoginModal
           isOpen={isModalOpen}
