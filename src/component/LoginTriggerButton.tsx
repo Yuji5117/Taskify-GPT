@@ -14,7 +14,12 @@ const LoginTriggerButton = () => {
       >
         Log in
       </button>
-      {isModalOpen && <LoginModal isOpen={isModalOpen} />}
+      {isModalOpen && (
+        <LoginModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </>
   );
 };

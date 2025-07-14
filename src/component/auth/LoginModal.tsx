@@ -5,15 +5,25 @@ import React from "react";
 
 interface LoginModalProps {
   isOpen: boolean;
+  onClose: () => void;
 }
 
-const LoginModal = ({ isOpen }: LoginModalProps) => {
+const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   if (!isOpen) return <></>;
 
   return (
-    <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/30">
-      <div className="w-[30vw] max-w-md p-6 bg-white z-50 rounded-md shadow-lg relative">
-        <button className="text-4xl transition-colors absolute top-4 right-6 text-gray-400 hover:text-gray-600 cursor-pointer">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-30 flex items-center justify-center bg-black/30"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-[30vw] max-w-md p-6 bg-white z-50 rounded-md shadow-lg relative"
+      >
+        <button
+          onClick={onClose}
+          className="text-4xl transition-colors absolute top-4 right-6 text-gray-400 hover:text-gray-600 cursor-pointer"
+        >
           &times;
         </button>
 
