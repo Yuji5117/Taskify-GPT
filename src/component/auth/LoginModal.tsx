@@ -1,5 +1,6 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import React, { useEffect } from "react";
 
@@ -26,7 +27,9 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-30 flex items-center justify-center bg-black/30"
+      className={
+        "fixed inset-0 z-30 flex items-center justify-center bg-black/30"
+      }
     >
       <div
         onClick={(e) => e.stopPropagation()}
@@ -49,7 +52,10 @@ const LoginModal = ({ isOpen, onClose }: LoginModalProps) => {
           Issueとして管理できるツールです。
         </p>
         <div className="flex justify-center mb-6">
-          <button className="flex items-center gap-2 px-12 border border-gray-400 rounded-full py-2 hover:bg-blue-100 transition-colors cursor-pointer">
+          <button
+            onClick={() => signIn()}
+            className="flex items-center gap-2 px-12 border border-gray-400 rounded-full py-2 hover:bg-blue-100 transition-colors cursor-pointer"
+          >
             <Image src="/github.svg" alt="Github" width={20} height={20} />
             <span>Githubでログイン</span>
           </button>
