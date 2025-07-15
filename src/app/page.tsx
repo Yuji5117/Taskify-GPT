@@ -8,7 +8,9 @@ export default function Home() {
           🤖 ChatGPTとの会話を貼り付けてタスクを抽出しよう
         </h2>
 
-        <TaskExtractorContainer />
+        <div className="my-10">
+          <TaskExtractorContainer />
+        </div>
       </div>
     </div>
   );

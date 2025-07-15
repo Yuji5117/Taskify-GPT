@@ -13,7 +13,7 @@ const TaskInputSection = ({
   handleExtractTasks,
 }: TaskInputSectionProps) => {
   return (
-    <div className="py-10 flex flex-col items-center">
+    <div className="space-y-10 flex flex-col items-center">
       <textarea
         value={chatText}
         onChange={handleChatChange}
@@ -23,7 +23,7 @@ const TaskInputSection = ({
       />
       <Button
         size="lg"
-        className="mt-6 w-[50vw] max-w-xl"
+        className="w-[50vw] max-w-xl"
         onClick={handleExtractTasks}
       >
         タスクの抽出

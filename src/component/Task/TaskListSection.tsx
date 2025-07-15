@@ -19,8 +19,8 @@ const TaskListSection = ({
   return (
     <>
       {tasks.length > 0 ? (
-        <div className="px-4">
-          <div className="my-8 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div className="space-y-8">
+          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {tasks.map((task) => (
               <TaskCard
                 key={task.title}

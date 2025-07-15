@@ -39,7 +39,7 @@ const TaskExtractorContainer = () => {
     // githubにイシューを作る処理を実装
   };
   return (
-    <div>
+    <div className="space-y-10">
       <TaskInputSection
         chatText={chatText}
         handleChatChange={handleChatChange}
