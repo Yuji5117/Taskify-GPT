@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "@/styles/globals.css";
 import LoginTriggerButton from "@/component/LoginTriggerButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Taskify-GPT",
@@ -8,11 +10,13 @@ export const metadata: Metadata = {
     "An AI-powered tool that turns your ChatGPT conversations into clear, actionable tasks. Ideal for developers and project managers. Open-source on GitHub.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html lang="en">
       <head>
@@ -23,7 +27,7 @@ export default function RootLayout({
           <header className="h-14 bg-amber-50">
             <div className="max-w-6xl mx-auto flex items-center justify-between h-full">
               <h1 className="text-xl font-bold">Taskify-GPT</h1>
-              <LoginTriggerButton />
+              <LoginTriggerButton session={session} />
             </div>
           </header>
           <main className="flex-1">{children}</main>

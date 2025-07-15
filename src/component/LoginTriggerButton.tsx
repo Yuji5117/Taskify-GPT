@@ -3,15 +3,27 @@
 import React, { useState } from "react";
 import LoginModal from "./auth/LoginModal";
 import Button from "./ui/Button";
+import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
 
-const LoginTriggerButton = () => {
+interface LoginTriggerButtonProps {
+  session: Session | null;
+}
+
+const LoginTriggerButton = ({ session }: LoginTriggerButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   return (
     <>
-      <Button size="sm" onClick={() => setIsModalOpen(true)}>
-        Log in
-      </Button>
+      {session ? (
+        <Button size="sm" onClick={() => signOut()}>
+          Log out
+        </Button>
+      ) : (
+        <Button size="sm" onClick={() => setIsModalOpen(true)}>
+          Log in
+        </Button>
+      )}
       {isModalOpen && (
         <LoginModal
           isOpen={isModalOpen}
