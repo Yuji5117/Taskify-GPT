@@ -4,8 +4,13 @@ import React, { ChangeEvent, useState } from "react";
 import TaskInputSection from "./TaskInputSection";
 import TaskListSection from "./TaskListSection";
 import { Task } from "@/types";
+import { Session } from "next-auth";
 
-const TaskExtractorContainer = () => {
+interface TaskExtractorContainerProps {
+  session: Session | null;
+}
+
+const TaskExtractorContainer = ({ session }: TaskExtractorContainerProps) => {
   const [chatText, setChatText] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([]);
@@ -33,11 +38,6 @@ const TaskExtractorContainer = () => {
         : [...prev, task]
     );
   };
-
-  const handleCreateIssues = () => {
-    console.log("Create these issues: ", selectedTasks);
-    // githubにイシューを作る処理を実装
-  };
   return (
     <div className="space-y-10">
       <TaskInputSection
@@ -48,8 +48,8 @@ const TaskExtractorContainer = () => {
       <TaskListSection
         tasks={tasks}
         selectedTasks={selectedTasks}
+        session={session}
         handleToggleTask={handleToggleTask}
-        handleCreateIssues={handleCreateIssues}
       />
     </div>
   );

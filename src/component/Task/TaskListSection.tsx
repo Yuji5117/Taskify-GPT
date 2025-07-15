@@ -1,21 +1,31 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 import TaskCard from "./TaskCard";
 import Button from "../ui/Button";
 import { Task } from "@/types";
+import { Session } from "next-auth";
+import LoginModal from "../auth/LoginModal";
 
 interface TaskListSectionProps {
   tasks: Task[];
   selectedTasks: Task[];
+  session: Session | null;
   handleToggleTask: (task: Task) => void;
-  handleCreateIssues: () => void;
 }
 
 const TaskListSection = ({
   tasks,
   selectedTasks,
+  session,
   handleToggleTask,
-  handleCreateIssues,
 }: TaskListSectionProps) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const handleCreateIssues = () => {
+    console.log("Create these issues: ", selectedTasks);
+  };
+
   return (
     <>
       {tasks.length > 0 ? (
@@ -32,10 +42,22 @@ const TaskListSection = ({
           </div>
 
           <div className="flex justify-center">
-            <Button size="md" onClick={handleCreateIssues}>
-              タスクをIssue化
-            </Button>
+            {session ? (
+              <Button size="md" onClick={handleCreateIssues}>
+                タスクをIssue化
+              </Button>
+            ) : (
+              <Button size="md" onClick={() => setIsModalOpen(true)}>
+                ログインしてタスクをIssue化
+              </Button>
+            )}
           </div>
+          {isModalOpen && (
+            <LoginModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
+          )}
         </div>
       ) : (
         <p className="text-center text-xl">タスクがありません。</p>
