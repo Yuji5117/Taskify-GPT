@@ -1,17 +1,18 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import LoginModal from "./auth/LoginModal";
-import Button from "./ui/Button";
-import { Session } from "next-auth";
-import { signOut } from "next-auth/react";
+import { Session } from 'next-auth'
+import { signOut } from 'next-auth/react'
+import React, { useState } from 'react'
+
+import LoginModal from './auth/LoginModal'
+import Button from './ui/Button'
 
 interface LoginTriggerButtonProps {
-  session: Session | null;
+  session: Session | null
 }
 
 const LoginTriggerButton = ({ session }: LoginTriggerButtonProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -24,14 +25,9 @@ const LoginTriggerButton = ({ session }: LoginTriggerButtonProps) => {
           Log in
         </Button>
       )}
-      {isModalOpen && (
-        <LoginModal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
+      {isModalOpen && <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
     </>
-  );
-};
+  )
+}
 
-export default LoginTriggerButton;
+export default LoginTriggerButton

@@ -1,17 +1,19 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import TaskCard from "./TaskCard";
-import Button from "../ui/Button";
-import { Task } from "@/types";
-import { Session } from "next-auth";
-import LoginModal from "../auth/LoginModal";
+import { Session } from 'next-auth'
+import React, { useState } from 'react'
+
+import { Task } from '@/types'
+
+import TaskCard from './TaskCard'
+import LoginModal from '../auth/LoginModal'
+import Button from '../ui/Button'
 
 interface TaskListSectionProps {
-  tasks: Task[];
-  selectedTasks: Task[];
-  session: Session | null;
-  handleToggleTask: (task: Task) => void;
+  tasks: Task[]
+  selectedTasks: Task[]
+  session: Session | null
+  handleToggleTask: (task: Task) => void
 }
 
 const TaskListSection = ({
@@ -20,22 +22,22 @@ const TaskListSection = ({
   session,
   handleToggleTask,
 }: TaskListSectionProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const handleCreateIssues = () => {
-    console.log("Create these issues: ", selectedTasks);
-  };
+    console.log('Create these issues: ', selectedTasks)
+  }
 
   return (
     <>
       {tasks.length > 0 ? (
         <div className="space-y-8">
           <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {tasks.map((task) => (
+            {tasks.map(task => (
               <TaskCard
                 key={task.title}
                 task={task}
-                isChecked={selectedTasks.some((t) => t.id === task.id)}
+                isChecked={selectedTasks.some(t => t.id === task.id)}
                 onToggle={handleToggleTask}
               />
             ))}
@@ -52,18 +54,13 @@ const TaskListSection = ({
               </Button>
             )}
           </div>
-          {isModalOpen && (
-            <LoginModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-            />
-          )}
+          {isModalOpen && <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
         </div>
       ) : (
         <p className="text-center text-xl">タスクがありません。</p>
       )}
     </>
-  );
-};
+  )
+}
 
-export default TaskListSection;
+export default TaskListSection

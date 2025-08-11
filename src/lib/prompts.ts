@@ -21,5 +21,5 @@ export const generateTaskExtractionPrompt = (chatText: string) => {
 
   # 会話ログ:
   ${chatText}
-  `;
-};
+  `
+}

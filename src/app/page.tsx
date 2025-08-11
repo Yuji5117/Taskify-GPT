@@ -1,14 +1,15 @@
-import TaskExtractorContainer from "@/component/Task/TaskExtractorContainer";
-import { authOptions } from "@/lib/auth";
-import { getServerSession } from "next-auth";
+import { getServerSession } from 'next-auth'
+
+import TaskExtractorContainer from '@/component/Task/TaskExtractorContainer'
+import { authOptions } from '@/lib/auth'
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   return (
-    <div className="max-w-5xl mx-auto py-10">
+    <div className="mx-auto max-w-5xl py-10">
       <div>
-        <h2 className="text-3xl text-center font-bold">
+        <h2 className="text-center text-3xl font-bold">
           🤖 ChatGPTとの会話を貼り付けてタスクを抽出しよう
         </h2>
 
@@ -17,5 +18,5 @@ export default async function Home() {
         </div>
       </div>
     </div>
-  );
+  )
 }
