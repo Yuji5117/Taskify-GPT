@@ -1,4 +1,5 @@
-type RequestOptions = Omit<RequestInit, 'body'> & { body?: object }
+type HttpMethod = 'GET' | 'POST'
+type RequestOptions = { method?: HttpMethod; headers?: Record<string, string>; body?: object }
 
 const fetchApi = async <T>(url: string, options: RequestOptions = {}): Promise<T> => {
   const { body, ...rest } = options
