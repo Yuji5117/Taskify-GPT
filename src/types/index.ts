@@ -1,10 +1,3 @@
-export type Task = {
-  id: string
-  title: string
-  body: string
-  label: string[]
-}
-
 type ApiErrorResponse = {
   data: null
   success: false
