@@ -3,7 +3,8 @@
 import { Session } from 'next-auth'
 import React, { ChangeEvent, useState } from 'react'
 
-import { Task } from '@/types'
+import { paths } from '@/constants/paths'
+import { Task } from '@/schemas/task'
 
 import TaskInputSection from './TaskInputSection'
 import TaskListSection from './TaskListSection'
@@ -22,7 +23,7 @@ const TaskExtractorContainer = ({ session }: TaskExtractorContainerProps) => {
   }
 
   const handleExtractTasks = async () => {
-    const response = await fetch('/api/tasks/extract', {
+    const response = await fetch(paths.api.tasks.extract.path, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chatText }),
