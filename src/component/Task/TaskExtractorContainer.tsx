@@ -4,7 +4,9 @@ import { Session } from 'next-auth'
 import React, { ChangeEvent, useState } from 'react'
 
 import { paths } from '@/constants/paths'
+import { apiClient } from '@/lib/apiClient'
 import { Task } from '@/schemas/task'
+import { ApiResponse } from '@/types'
 
 import TaskInputSection from './TaskInputSection'
 import TaskListSection from './TaskListSection'
@@ -23,15 +25,21 @@ const TaskExtractorContainer = ({ session }: TaskExtractorContainerProps) => {
   }
 
   const handleExtractTasks = async () => {
-    const response = await fetch(paths.api.tasks.extract.path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatText }),
-    })
+    try {
+      const response = await apiClient.post<ApiResponse<Task[]>>(paths.api.tasks.extract.path, {
+        body: chatText,
+      })
 
-    const data = await response.json()
-    setTasks(data.tasks)
-    setSelectedTasks(data.tasks)
+      if (response.success === false) {
+        console.error('タスクの抽出に失敗:', response.message)
+        return
+      }
+
+      setTasks(response.data || [])
+      setSelectedTasks(response.data || [])
+    } catch (error) {
+      console.error('API呼び出しエラー:', error)
+    }
   }
 
   const handleToggleTask = (task: Task) => {
