@@ -3,7 +3,7 @@
 import { Session } from 'next-auth'
 import React, { useState } from 'react'
 
-import { Task } from '@/types'
+import { Task } from '@/schemas/task'
 
 import TaskCard from './TaskCard'
 import LoginModal from '../auth/LoginModal'
