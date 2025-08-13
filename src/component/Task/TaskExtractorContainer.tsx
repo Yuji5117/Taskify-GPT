@@ -28,12 +28,12 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
 
   const handleExtractTasks = async () => {
     try {
-      const [tasksResponse, reposResponse] = await Promise.all([
-        apiClient.post<ApiResponse<Task[]>>(paths.api.tasks.extract.path, {
+      const tasksResponse = await apiClient.post<ApiResponse<Task[]>>(
+        paths.api.tasks.extract.path,
+        {
           body: chatText,
-        }),
-        apiClient.get<ApiResponse<Repository[]>>(paths.api.github.repos.path),
-      ])
+        },
+      )
 
       if (tasksResponse.success === false) {
         console.error('タスクの抽出に失敗:', tasksResponse.message)
@@ -43,12 +43,26 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
       setTasks(tasksResponse.data || [])
       setSelectedTasks(tasksResponse.data || [])
 
-      //TODO:  apiからの返却値でのsessionがない場合のエラー処理
-      if (reposResponse.success) {
-        setRepositories(reposResponse.data || [])
-        setSelectedRepository(null)
+      if (isAuthenticated) {
+        try {
+          const reposResponse = await apiClient.get<ApiResponse<Repository[]>>(
+            paths.api.github.repos.path,
+          )
+
+          if (reposResponse.success) {
+            setRepositories(reposResponse.data || [])
+            setSelectedRepository(null)
+          } else {
+            console.error('レポジトリの取得に失敗:', reposResponse.message)
+            setRepositories([])
+            setSelectedRepository(null)
+          }
+        } catch (error) {
+          console.error('レポジトリ取得エラー:', error)
+          setRepositories([])
+          setSelectedRepository(null)
+        }
       } else {
-        console.error('レポジトリの取得に失敗:', reposResponse.message)
         setRepositories([])
         setSelectedRepository(null)
       }
