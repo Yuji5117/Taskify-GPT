@@ -9,6 +9,9 @@ export const paths = {
       repos: {
         path: '/api/github/repos',
       },
+      issues: {
+        path: '/api/github/issues',
+      },
     },
   },
 }
