@@ -22,23 +22,25 @@ This is a Next.js 15 application (App Router) that converts ChatGPT conversation
 
 ### Key Directory Structure
 
-- `src/app/api/` - API routes following App Router conventions
-  - `tasks/extract/` - Main task extraction endpoint
-  - `auth/[...nextauth]/` - NextAuth.js authentication
-  - `github/` - GitHub API integration endpoints
-- `src/component/` - React components organized by feature
-  - `Task/` - Task-related components (Container, Input, List, Card)
-  - `auth/` - Authentication components
-  - `GitHub/` - GitHub integration components
-- `src/lib/` - Core business logic and external integrations
-  - `openai.ts` - OpenAI API integration for task extraction
-  - `prompts.ts` - AI prompt templates (Japanese language)
-  - `apiClient.ts` - HTTP client wrapper
-  - `github.ts` - GitHub API integration
-  - `auth.ts` - NextAuth.js configuration
-- `src/schemas/` - Zod validation schemas
-- `src/types/` - TypeScript type definitions
-- `src/constants/` - Application constants (API paths)
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   ├── layout.tsx
+│   └── page.tsx
+├── component/              # UI components
+│   ├── ui/               # Base UI components
+│   ├── Task/             # Task-related components
+│   ├── GitHub/           # GitHub integration components
+│   └── auth/             # Authentication components
+├── lib/                   # Core logic and external integrations
+├── schemas/               # Zod validation schemas
+├── types/                 # TypeScript type definitions
+├── constants/             # Application constants
+├── hooks/                 # Custom React hooks
+├── util/                  # Utility functions
+└── styles/               # Global styles
+```
 
 ### Authentication & External Services
 
