@@ -52,13 +52,23 @@ This is a Next.js 15 application (App Router) that converts ChatGPT conversation
 All API endpoints use a standardized `ApiResponse<T>` type:
 
 ```typescript
-type ApiResponse<T> = {
-  data: T | null
-  success: boolean
+type ApiSuccessResponse<T> = {
+  data: T
+  success: true
   message: string
-  errorCode?: string // Only present on errors
 }
+
+type ApiErrorResponse = {
+  data: null
+  success: false
+  message: string
+  errorCode: string
+}
+
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse
 ```
+
+**Important**: Always use `ApiResponse<T>` with the expected data type, never `ApiResponse<null>`.
 
 ### Task Data Model
 
