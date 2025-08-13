@@ -3,10 +3,12 @@
 import { Session } from 'next-auth'
 import React, { useState } from 'react'
 
+import { Repository } from '@/schemas/repository'
 import { Task } from '@/schemas/task'
 
 import TaskCard from './TaskCard'
 import LoginModal from '../auth/LoginModal'
+import RepositoryDropdown from '../GitHub/RepositoryDropdown'
 import Button from '../ui/Button'
 
 interface TaskListSectionProps {
@@ -14,6 +16,9 @@ interface TaskListSectionProps {
   selectedTasks: Task[]
   session: Session | null
   handleToggleTask: (task: Task) => void
+  repositories: Repository[]
+  selectedRepository: Repository | null
+  onRepositorySelect: (repository: Repository) => void
 }
 
 const TaskListSection = ({
@@ -21,6 +26,9 @@ const TaskListSection = ({
   selectedTasks,
   session,
   handleToggleTask,
+  repositories,
+  selectedRepository,
+  onRepositorySelect,
 }: TaskListSectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -43,9 +51,21 @@ const TaskListSection = ({
             ))}
           </div>
 
+          {session && repositories.length > 0 && (
+            <div className="flex justify-center">
+              <div className="w-full max-w-md">
+                <RepositoryDropdown
+                  repositories={repositories}
+                  selectedRepository={selectedRepository}
+                  onSelect={onRepositorySelect}
+                />
+              </div>
+            </div>
+          )}
+
           <div className="flex justify-center">
             {session ? (
-              <Button size="md" onClick={handleCreateIssues}>
+              <Button size="md" onClick={handleCreateIssues} disabled={!selectedRepository}>
                 タスクをIssue化
               </Button>
             ) : (
