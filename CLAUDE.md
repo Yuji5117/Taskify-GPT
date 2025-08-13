@@ -50,26 +50,33 @@ This is a Next.js 15 application (App Router) that converts ChatGPT conversation
 ### API Response Pattern
 
 All API endpoints use a standardized `ApiResponse<T>` type:
+
 ```typescript
 type ApiResponse<T> = {
   data: T | null
   success: boolean
   message: string
-  errorCode?: string  // Only present on errors
+  errorCode?: string // Only present on errors
 }
 ```
 
 ### Task Data Model
 
 Tasks are defined by the `TaskSchema` (Zod) with:
+
 - `id`: string (UUID)
 - `title`: string (1-255 chars) - Used as GitHub issue title
 - `description`: optional string (max 500 chars)
 
+### Sensitive Files
+
+- `.env.local`
+- Any API keys or secrets — never commit or expose
+
 ### Important Implementation Notes
 
+- Follow ESLint rules strictly
 - All user-facing text and AI prompts are in Japanese
 - Task extraction uses Japanese prompts in `generateTaskExtractionPrompt()`
-- Error handling includes console logging with emoji prefixes (❌ for errors)
 - API paths are centralized in `src/constants/paths.ts`
 - The app uses TypeScript strictly with Zod validation at API boundaries
