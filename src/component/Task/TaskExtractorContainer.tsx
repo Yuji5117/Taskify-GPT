@@ -1,6 +1,5 @@
 'use client'
 
-import { Session } from 'next-auth'
 import React, { ChangeEvent, useState } from 'react'
 
 import { paths } from '@/constants/paths'
@@ -13,10 +12,10 @@ import TaskInputSection from './TaskInputSection'
 import TaskListSection from './TaskListSection'
 
 interface TaskExtractorContainerProps {
-  session: Session | null
+  isAuthenticated: boolean
 }
 
-const TaskExtractorContainer = ({ session }: TaskExtractorContainerProps) => {
+const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps) => {
   const [chatText, setChatText] = useState<string>('')
   const [tasks, setTasks] = useState<Task[]>([])
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([])
@@ -79,7 +78,7 @@ const TaskExtractorContainer = ({ session }: TaskExtractorContainerProps) => {
       <TaskListSection
         tasks={tasks}
         selectedTasks={selectedTasks}
-        session={session}
+        isAuthenticated={isAuthenticated}
         handleToggleTask={handleToggleTask}
         repositories={repositories}
         selectedRepository={selectedRepository}

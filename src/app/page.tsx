@@ -14,7 +14,7 @@ export default async function Home() {
         </h2>
 
         <div className="my-10">
-          <TaskExtractorContainer session={session} />
+          <TaskExtractorContainer isAuthenticated={!!session} />
         </div>
       </div>
     </div>

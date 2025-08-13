@@ -29,7 +29,7 @@ export default async function RootLayout({
           <header className="h-14 bg-amber-50">
             <div className="mx-auto flex h-full max-w-6xl items-center justify-between">
               <h1 className="text-xl font-bold">Taskify-GPT</h1>
-              <LoginTriggerButton session={session} />
+              <LoginTriggerButton isAuthenticated={!!session} />
             </div>
           </header>
           <main className="flex-1">{children}</main>

@@ -1,6 +1,5 @@
 'use client'
 
-import { Session } from 'next-auth'
 import React, { useState } from 'react'
 
 import { Repository } from '@/schemas/repository'
@@ -14,7 +13,7 @@ import Button from '../ui/Button'
 interface TaskListSectionProps {
   tasks: Task[]
   selectedTasks: Task[]
-  session: Session | null
+  isAuthenticated: boolean
   handleToggleTask: (task: Task) => void
   repositories: Repository[]
   selectedRepository: Repository | null
@@ -24,7 +23,7 @@ interface TaskListSectionProps {
 const TaskListSection = ({
   tasks,
   selectedTasks,
-  session,
+  isAuthenticated,
   handleToggleTask,
   repositories,
   selectedRepository,
@@ -51,7 +50,7 @@ const TaskListSection = ({
             ))}
           </div>
 
-          {session && repositories.length > 0 && (
+          {isAuthenticated && repositories.length > 0 && (
             <div className="flex justify-center">
               <div className="w-full max-w-md">
                 <RepositoryDropdown
@@ -64,7 +63,7 @@ const TaskListSection = ({
           )}
 
           <div className="flex justify-center">
-            {session ? (
+            {isAuthenticated ? (
               <Button size="md" onClick={handleCreateIssues} disabled={!selectedRepository}>
                 タスクをIssue化
               </Button>
