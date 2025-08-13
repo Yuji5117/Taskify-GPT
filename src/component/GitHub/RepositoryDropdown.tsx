@@ -25,7 +25,7 @@ const RepositoryDropdown = ({
     }
   }
 
-  if (repositories.length) {
+  if (repositories.length === 0) {
     return <div className="text-center text-sm text-red-500">レポジトリが見つかりませんでした</div>
   }
 
