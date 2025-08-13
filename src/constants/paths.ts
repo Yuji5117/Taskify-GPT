@@ -5,5 +5,10 @@ export const paths = {
         path: '/api/tasks/extract',
       },
     },
+    github: {
+      repos: {
+        path: '/api/github/repos',
+      },
+    },
   },
 }
