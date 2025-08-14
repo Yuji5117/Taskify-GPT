@@ -1,15 +1,18 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
+import { ZodError } from 'zod'
 
 import { authOptions } from '@/lib/auth'
+import { createOctokit } from '@/lib/github'
+import { IssueCreationRequestSchema, CreatedIssue } from '@/schemas/issueCreation'
 import { ApiResponse } from '@/types'
 
-export const POST = async () => {
+export const POST = async (request: NextRequest) => {
   try {
     const session = await getServerSession(authOptions)
 
     if (!session?.user?.accessToken) {
-      return NextResponse.json<ApiResponse<any>>(
+      return NextResponse.json<ApiResponse<CreatedIssue[]>>(
         {
           data: null,
           success: false,
@@ -20,13 +23,31 @@ export const POST = async () => {
       )
     }
 
-    // TODO: リクエストボディのバリデーション
-    // TODO: GitHub API でissue作成
-    // TODO: レスポンス返却
+    const body = await request.json()
+    const validatedData = IssueCreationRequestSchema.parse(body)
 
-    return NextResponse.json<ApiResponse<any>>(
+    const octokit = createOctokit(session.user.accessToken)
+    const createdIssues: CreatedIssue[] = []
+
+    for (const task of validatedData.tasks) {
+      const issueResponse = await octokit.rest.issues.create({
+        owner: validatedData.repositoryFullName.split('/')[0],
+        repo: validatedData.repositoryFullName.split('/')[1],
+        title: task.title,
+        body: task.body || '',
+      })
+
+      createdIssues.push({
+        id: issueResponse.data.id,
+        title: issueResponse.data.title,
+        body: issueResponse.data.body || undefined,
+        html_url: issueResponse.data.html_url,
+      })
+    }
+
+    return NextResponse.json<ApiResponse<CreatedIssue[]>>(
       {
-        data: null,
+        data: createdIssues,
         success: true,
         message: 'GitHub issueの作成に成功しました',
       },
@@ -35,7 +56,19 @@ export const POST = async () => {
   } catch (err) {
     console.error('❌ GitHub issues API error:', err)
 
-    return NextResponse.json<ApiResponse<any>>(
+    if (err instanceof ZodError) {
+      return NextResponse.json<ApiResponse<CreatedIssue[]>>(
+        {
+          data: null,
+          success: false,
+          message: 'リクエストパラメータが不正です',
+          errorCode: 'VALIDATION_ERROR',
+        },
+        { status: 400 },
+      )
+    }
+
+    return NextResponse.json<ApiResponse<CreatedIssue[]>>(
       {
         data: null,
         success: false,
