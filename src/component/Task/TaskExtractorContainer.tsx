@@ -4,6 +4,7 @@ import React, { ChangeEvent, useState } from 'react'
 
 import { paths } from '@/constants/paths'
 import { apiClient } from '@/lib/apiClient'
+import { CreatedIssue, IssueCreationRequest } from '@/schemas/issueCreation'
 import { Repository } from '@/schemas/repository'
 import { Task } from '@/schemas/task'
 import { ApiResponse } from '@/types'
@@ -21,6 +22,7 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
   const [selectedTasks, setSelectedTasks] = useState<Task[]>([])
   const [repositories, setRepositories] = useState<Repository[]>([])
   const [selectedRepository, setSelectedRepository] = useState<Repository | null>(null)
+  const [isCreatingIssues, setIsCreatingIssues] = useState<boolean>(false)
 
   const handleChatChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setChatText(e.target.value)
@@ -82,6 +84,41 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
   const handleRepositorySelect = (repository: Repository) => {
     setSelectedRepository(repository)
   }
+
+  const handleCreateIssues = async () => {
+    if (!selectedRepository || selectedTasks.length === 0) {
+      console.error('リポジトリまたはタスクが選択されていません')
+      return
+    }
+
+    setIsCreatingIssues(true)
+
+    try {
+      const requestBody: IssueCreationRequest = {
+        tasks: selectedTasks,
+        repositoryFullName: selectedRepository.full_name,
+      }
+
+      const response = await apiClient.post<ApiResponse<CreatedIssue[]>>(
+        paths.api.github.issues.path,
+        requestBody,
+      )
+
+      if (response.success === false) {
+        console.error('GitHub issueの作成に失敗:', response.message)
+        return
+      }
+
+      const createdIssues = response.data || []
+      console.log('作成されたGitHub issue:', createdIssues)
+
+      setSelectedTasks([])
+    } catch (error) {
+      console.error('GitHub issue作成エラー:', error)
+    } finally {
+      setIsCreatingIssues(false)
+    }
+  }
   return (
     <div className="space-y-10">
       <TaskInputSection
@@ -97,6 +134,8 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
         repositories={repositories}
         selectedRepository={selectedRepository}
         onRepositorySelect={handleRepositorySelect}
+        handleCreateIssues={handleCreateIssues}
+        isCreatingIssues={isCreatingIssues}
       />
     </div>
   )

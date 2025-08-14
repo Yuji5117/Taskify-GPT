@@ -18,6 +18,8 @@ interface TaskListSectionProps {
   repositories: Repository[]
   selectedRepository: Repository | null
   onRepositorySelect: (repository: Repository) => void
+  handleCreateIssues: () => void
+  isCreatingIssues: boolean
 }
 
 const TaskListSection = ({
@@ -28,12 +30,10 @@ const TaskListSection = ({
   repositories,
   selectedRepository,
   onRepositorySelect,
+  handleCreateIssues,
+  isCreatingIssues,
 }: TaskListSectionProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-
-  const handleCreateIssues = () => {
-    console.log('Create these issues: ', selectedTasks)
-  }
 
   return (
     <>
@@ -64,8 +64,12 @@ const TaskListSection = ({
 
           <div className="flex justify-center">
             {isAuthenticated ? (
-              <Button size="md" onClick={handleCreateIssues} disabled={!selectedRepository}>
-                タスクをIssue化
+              <Button
+                size="md"
+                onClick={handleCreateIssues}
+                disabled={!selectedRepository || selectedTasks.length === 0 || isCreatingIssues}
+              >
+                {isCreatingIssues ? 'Issue作成中...' : 'タスクをIssue化'}
               </Button>
             ) : (
               <Button size="md" onClick={() => setIsModalOpen(true)}>
