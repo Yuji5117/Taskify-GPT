@@ -26,13 +26,26 @@ export const POST = async (request: NextRequest) => {
     const body = await request.json()
     const validatedData = IssueCreationRequestSchema.parse(body)
 
+    const [owner, repo] = validatedData.repositoryFullName.split('/')
+    if (!owner || !repo) {
+      return NextResponse.json<ApiResponse<CreatedIssue[]>>(
+        {
+          data: null,
+          success: false,
+          message: 'リポジトリ名が正しい形式ではありません（owner/repo形式で入力してください）',
+          errorCode: 'INVALID_REPOSITORY_FORMAT',
+        },
+        { status: 400 },
+      )
+    }
+
     const octokit = createOctokit(session.user.accessToken)
     const createdIssues: CreatedIssue[] = []
 
     for (const task of validatedData.tasks) {
       const issueResponse = await octokit.rest.issues.create({
-        owner: validatedData.repositoryFullName.split('/')[0],
-        repo: validatedData.repositoryFullName.split('/')[1],
+        owner,
+        repo,
         title: task.title,
         body: task.body || '',
       })
