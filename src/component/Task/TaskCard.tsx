@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Task } from '@/types'
+import { Task } from '@/schemas/task'
 
 type TaskCardProps = {
   task: Task
@@ -22,17 +22,6 @@ const TaskCard = ({ task, isChecked, onToggle }: TaskCardProps) => {
       </div>
 
       <p className="text-sm text-gray-700">{task.body}</p>
-
-      <div className="flex flex-wrap gap-2">
-        {task.label?.map(label => (
-          <span
-            key={label}
-            className="rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700"
-          >
-            #{label}
-          </span>
-        ))}
-      </div>
     </div>
   )
 }
