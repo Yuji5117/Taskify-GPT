@@ -13,9 +13,10 @@
 
 ### 管理方法
 
-- `src/constants/errorCodes.ts` で全エラーコードを定数として管理
+- `src/constants/errorCodes.ts` で全エラーコードとメッセージを定数として管理
 - `as const` アサーションによる型安全性の確保
 - カテゴリ別のグループ化
+- エラーコードとメッセージの対応関係を同一ファイルで管理
 
 ## 実装仕様
 
@@ -47,6 +48,26 @@ export const ERROR_CODES = {
   NETWORK_TIMEOUT: 'NETWORK_TIMEOUT',
 } as const
 
+export const ERROR_MESSAGES = {
+  [ERROR_CODES.AUTH_UNAUTHORIZED]: 'ログインが必要です',
+  [ERROR_CODES.AUTH_TOKEN_EXPIRED]: 'セッションが期限切れです。再度ログインしてください',
+  [ERROR_CODES.GITHUB_API_ERROR]:
+    'GitHub APIでエラーが発生しました。しばらく待ってから再度お試しください',
+  [ERROR_CODES.GITHUB_RATE_LIMITED]:
+    'GitHub APIの利用制限に達しました。しばらく待ってから再度お試しください',
+  [ERROR_CODES.GITHUB_REPOSITORY_ACCESS_DENIED]: '指定されたリポジトリにアクセスできません',
+  [ERROR_CODES.VALIDATION_ERROR]: '入力データが正しくありません',
+  [ERROR_CODES.VALIDATION_REQUIRED_FIELD]: '必須項目が入力されていません',
+  [ERROR_CODES.VALIDATION_INVALID_FORMAT]: '入力形式が正しくありません',
+  [ERROR_CODES.INVALID_REPOSITORY_FORMAT]:
+    'リポジトリ名が正しい形式ではありません（owner/repo形式で入力してください）',
+  [ERROR_CODES.TASK_EXTRACTION_FAILED]:
+    'テキストからタスクを抽出できませんでした。文章を見直してから再度お試しください',
+  [ERROR_CODES.NETWORK_CONNECTION_FAILED]:
+    'ネットワーク接続に失敗しました。インターネット接続を確認してください',
+  [ERROR_CODES.NETWORK_TIMEOUT]: '処理がタイムアウトしました。しばらく待ってから再度お試しください',
+} as const
+
 export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]
 ```
 
@@ -60,7 +81,7 @@ type ApiErrorResponse = {
   data: null
   success: false
   message: string
-  errorCode: ErrorCode // string から ErrorCode 型に変更
+  errorCode: ErrorCode
 }
 ```
 
@@ -69,14 +90,14 @@ type ApiErrorResponse = {
 ### API Route での使用
 
 ```typescript
-import { ERROR_CODES } from '@/constants/errorCodes'
+import { ERROR_CODES, ERROR_MESSAGES } from '@/constants/errorCodes'
 
 // 認証エラー
 return NextResponse.json<ApiResponse<T>>(
   {
     data: null,
     success: false,
-    message: 'ログインが必要です',
+    message: ERROR_MESSAGES[ERROR_CODES.AUTH_UNAUTHORIZED],
     errorCode: ERROR_CODES.AUTH_UNAUTHORIZED,
   },
   { status: 401 },
@@ -87,7 +108,7 @@ return NextResponse.json<ApiResponse<T>>(
   {
     data: null,
     success: false,
-    message: 'リポジトリ名が正しい形式ではありません',
+    message: ERROR_MESSAGES[ERROR_CODES.INVALID_REPOSITORY_FORMAT],
     errorCode: ERROR_CODES.INVALID_REPOSITORY_FORMAT,
   },
   { status: 400 },
@@ -97,7 +118,7 @@ return NextResponse.json<ApiResponse<T>>(
 ### フロントエンドでの使用
 
 ```typescript
-import { ERROR_CODES } from '@/constants/errorCodes'
+import { ERROR_CODES, ERROR_MESSAGES } from '@/constants/errorCodes'
 
 // 型安全なエラーコード判定
 if (response.errorCode === ERROR_CODES.AUTH_UNAUTHORIZED) {
@@ -118,6 +139,12 @@ switch (response.errorCode) {
     break
   default:
     handleGenericError()
+}
+
+// メッセージ表示
+const showErrorMessage = (errorCode: ErrorCode) => {
+  const message = ERROR_MESSAGES[errorCode] || 'エラーが発生しました'
+  showErrorToast(message)
 }
 ```
 
@@ -156,6 +183,8 @@ switch (response.errorCode) {
 
 ## 注意事項
 
-- エラーコード追加時は必ず `ERROR_CODES` オブジェクトに定義
+- エラーコード追加時は必ず `ERROR_CODES` と `ERROR_MESSAGES` 両方に定義
 - 既存のエラーコード名変更時は全影響箇所の確認が必要
 - カテゴリ分けは明確で一貫性のある命名規則に従う
+- エラーメッセージはユーザーフレンドリーな日本語で記述
+- エラーコードとメッセージの対応関係に漏れがないよう注意
