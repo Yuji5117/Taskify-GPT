@@ -33,7 +33,7 @@ const TaskExtractorContainer = ({ isAuthenticated }: TaskExtractorContainerProps
       const tasksResponse = await apiClient.post<ApiResponse<Task[]>>(
         paths.api.tasks.extract.path,
         {
-          body: chatText,
+          chatText,
         },
       )
 
