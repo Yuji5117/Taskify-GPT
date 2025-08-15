@@ -1,7 +1,7 @@
 import OpenAI from 'openai'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Task } from '@/types'
+import { Task } from '@/schemas/task'
 import { extractJsonFromCodeBlock } from '@/util/parse'
 
 import { env } from './env'
@@ -13,8 +13,7 @@ export const extractTasksFromChat = async (chatText: string) => {
   const prompt = generateTaskExtractionPrompt(chatText)
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-3.5-turbo',
-    // model: "gpt-4o",
+    model: 'gpt-5-nano',
     messages: [
       {
         role: 'system',
