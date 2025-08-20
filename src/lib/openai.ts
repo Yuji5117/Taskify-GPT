@@ -1,10 +1,10 @@
 import OpenAI from 'openai'
 import { v4 as uuidv4 } from 'uuid'
 
+import { env } from '@/config/env'
 import { Task } from '@/schemas/task'
 import { extractJsonFromCodeBlock } from '@/util/parse'
 
-import { env } from './env'
 import { generateTaskExtractionPrompt } from './prompts'
 
 const openai = new OpenAI({ apiKey: env.OPENAI_API_KEY })
