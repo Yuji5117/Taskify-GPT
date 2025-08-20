@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import GithubProvider from 'next-auth/providers/github'
 
-import { env } from '@/lib/env'
+import { env } from '@/config/env'
 
 export const authOptions: NextAuthOptions = {
   providers: [
